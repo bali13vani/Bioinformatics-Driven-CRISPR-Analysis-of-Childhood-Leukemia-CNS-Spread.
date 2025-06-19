@@ -7,7 +7,7 @@ from matplotlib.colors import LogNorm
 
 # Load normalized counts data for BM and CNS from the file
 counts = pd.read_csv(
-    "/Users/vanibali/Desktop/Major_Project/Normalized_data/VIVO_BMvsCNS.count_normalized.txt",
+    ".../VIVO_BMvsCNS.count_normalized.txt",
     sep='\t', 
     index_col=0
 )[['BM', 'CNS']]  # Select only the BM and CNS columns
@@ -63,7 +63,7 @@ plt.show()
 
 
 # Now load full dataset (with gene names included) for further analysis
-file_path = '/Users/vanibali/Desktop/Major_Project/Normalized_data/VIVO_BMvsCNS.count_normalized.txt'
+file_path = '.../VIVO_BMvsCNS.count_normalized.txt'
 df = pd.read_csv(file_path, sep='\t')
 
 # Split into targeting sgRNAs (real genes) and non-targeting controls (NTCs)
@@ -128,7 +128,7 @@ plt.show()
 
 
 # Load gene summary file for gene-level analysis
-df = pd.read_csv("/Users/vanibali/Desktop/Major_Project/Normalized_data/VIVO_BMvsCNS.gene_summary.txt", sep="\t")
+df = pd.read_csv(".../VIVO_BMvsCNS.gene_summary.txt", sep="\t")
 
 # Remove any rows without FDR values
 df = df.dropna(subset=["neg|fdr"])
