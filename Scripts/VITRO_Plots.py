@@ -227,22 +227,4 @@ plt.tight_layout()
 plt.show()
 
 
-# Another scatter plot for de novo gene prioritization
-de_novo_genes = df[['id', 'neg|lfc', 'neg|fdr']].dropna()
-de_novo_genes['-log10(FDR)'] = -np.log10(de_novo_genes['neg|fdr'])
 
-plt.figure(figsize=(10, 6))
-sns.scatterplot(data=de_novo_genes, x='neg|lfc', y='-log10(FDR)', alpha=0.7)
-plt.title("De Novo Gene Prioritization (in vitro)")
-plt.xlabel("Log2 Fold Change (LFC)")
-plt.ylabel("-log10(FDR)")
-plt.grid(True)
-plt.tight_layout()
-plt.show()
-
-
-# Save top 100 most significant genes based on FDR
-vitro_path = ".../VITRO_BMvsCNS.gene_summary.txt"
-vitro_df = pd.read_csv(vitro_path, sep="\t")
-top100_vitro = vitro_df.sort_values("neg|fdr").head(100)["id"]
-top100_vitro.to_csv("top100_vitro_genes.txt", index=False, header=False)
