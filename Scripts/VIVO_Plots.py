@@ -209,6 +209,4 @@ plt.tight_layout()
 plt.show()
 
 
-# Finally, save top 100 most significant genes (lowest FDR) to file
-top100_vivo = df.sort_values("neg|fdr").head(100)["id"]
-top100_vivo.to_csv("top100_vivo_genes.txt", index=False, header=False)
+
