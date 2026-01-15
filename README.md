@@ -15,4 +15,5 @@ performed using genome-scale metabolic models (GEMs) designed to reflect similar
 constraints of the CNS and bone marrow microenvironments. Gene knockouts were
 computationally simulated using flux balance analysis to identify metabolic vulnerabilities specific
 to the CNS.
+<img width="1056" height="702" alt="image" src="https://github.com/user-attachments/assets/f99a48d1-07bb-4e28-aa54-8af559565de7" />
 
