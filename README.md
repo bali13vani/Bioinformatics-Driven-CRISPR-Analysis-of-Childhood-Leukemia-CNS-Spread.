@@ -1,2 +1,3 @@
-# Bioinformatics-Driven-CRISPR-Analysis-of-Childhood-Leukemia-CNS-Spread.
-This project aims to discover genes, particularly those involved in metabolic pathways, that enable leukemia cells to infiltrate and thrive in the central nervous system (CNS). 
+<img width="2772" height="126" alt="image" src="https://github.com/user-attachments/assets/02a91742-65c1-4270-9434-de66de954531" /># Identifying CNS-Specific Essential Genes in Leukemia Using Computational Modeling and CRISPR-Cas9 Screening
+
+
