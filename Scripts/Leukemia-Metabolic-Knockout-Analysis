@@ -1,1 +1,101 @@
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+# ================================
+# 1. Load gene knockout data
+# ================================
+data <- read_csv("Combined_GeneKO_withRecon3D.csv")
+
+# Convert to long format
+data_long <- data %>%
+  pivot_longer(cols = BM1:Recon3D, names_to = "Sample", values_to = "Biomass")
+
+# Define wild-type
+data_long <- data_long %>%
+  mutate(IsWildtype = Sample == "Recon3D")
+
+# ================================
+# 2. Define conditions
+# ================================
+conditions <- list(
+  BM  = c("BM1","BM2","BM3","BM4"),
+  CNS = c("CNS1","CNS2","CNS3","CNS4")
+)
+
+threshold <- 0.10   # 10% biomass change
+
+# ================================
+# 3. Compute gene knockout impact
+# ================================
+results <- list()
+
+for (gene in unique(data_long$Gene_ID)) {
+
+  gene_data <- data_long %>% filter(Gene_ID == gene)
+  wt <- gene_data %>% filter(Sample == "Recon3D") %>% pull(Biomass)
+
+  if (length(wt) == 1 && !is.na(wt) && wt != 0) {
+
+    for (cond in names(conditions)) {
+      vals <- gene_data %>% filter(Sample %in% conditions[[cond]]) %>% pull(Biomass)
+      mean_val <- mean(vals, na.rm = TRUE)
+      rel_change <- (mean_val - wt) / wt
+
+      results[[length(results)+1]] <- data.frame(
+        Gene_ID = gene,
+        Condition = cond,
+        MeanDecrease = rel_change
+      )
+    }
+  }
+}
+
+results <- bind_rows(results)
+
+# ================================
+# 4. Select impactful knockouts
+# ================================
+hits <- results %>% filter(abs(MeanDecrease) > threshold)
+
+gene_map <- data %>% select(Gene_ID, Gene_Name) %>% distinct()
+
+final <- hits %>% left_join(gene_map, by = "Gene_ID")
+
+write.csv(final, "ContextSpecific_Gene_Knockouts.csv", row.names = FALSE)
+
+# ================================
+# 5. Top genes
+# ================================
+top10 <- final %>% arrange(MeanDecrease) %>% slice(1:10)
+
+top10$Label <- ifelse(is.na(top10$Gene_Name), top10$Gene_ID, top10$Gene_Name)
+
+# ================================
+# 6. Plots
+# ================================
+
+# Top knockout genes
+ggplot(top10, aes(x = reorder(Label, MeanDecrease), y = MeanDecrease, fill = Condition)) +
+  geom_col() +
+  coord_flip() +
+  labs(title = "Top 10 Most Impactful Gene Knockouts",
+       x = "Gene", y = "Relative Biomass Change") +
+  theme_minimal()
+
+# Distribution by condition
+ggplot(final, aes(x = Condition, y = MeanDecrease, fill = Condition)) +
+  geom_violin(trim = FALSE, alpha = 0.6) +
+  geom_boxplot(width = 0.1, outlier.shape = NA) +
+  theme_minimal() +
+  labs(title = "Biomass Reduction by Condition",
+       y = "Relative Biomass Change")
+
+# Density
+ggplot(final, aes(x = MeanDecrease, fill = Condition)) +
+  geom_density(alpha = 0.5) +
+  theme_minimal() +
+  labs(title = "Density of Knockout Effects",
+       x = "Relative Biomass Change")
 
