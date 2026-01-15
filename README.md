@@ -4,6 +4,6 @@ Hypothesis
 •The hypothesis of this project is that leukemic cells require a unique set of genes for survival in the central nervous system (CNS) that do not have to be active in the microenvironment of bone marrow.
 Why is it Important?
 •CNS involvement in leukemia is hard to detect early and harder to treat safely.
-<img width="2555" height="189" alt="image" src="https://github.com/user-attachments/assets/11ef5675-ad0d-436e-a4ba-b28942016139" />
+
 
 
